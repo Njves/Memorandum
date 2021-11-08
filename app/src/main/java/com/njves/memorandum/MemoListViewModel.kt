@@ -10,7 +10,9 @@ class MemoListViewModel : ViewModel() {
     }
 
     fun addMemo(memo: Memo) {
-        memoLiveData.value?.add(memo)
+        val list =  memoLiveData.value ?: mutableListOf()
+        list.add(memo)
+        memoLiveData.value = list
     }
 
 

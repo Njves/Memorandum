@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MemoAdapter(val memoList: List<Memo>) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
+class MemoAdapter(var memoList: List<Memo>) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.memo_item, parent, false)

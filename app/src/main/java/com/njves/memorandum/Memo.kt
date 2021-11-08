@@ -1,3 +1,5 @@
 package com.njves.memorandum
 
-data class Memo(val subject: String, val content: String)
+import java.util.*
+
+data class Memo(val id: UUID = UUID.randomUUID(), var subject: String = "", var content: String = "")
