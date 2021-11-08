@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Memorandum</string>
+    <string name="fab_desc">Добавить</string>
+    <string name="search_memo_hint">Search memo</string>
+</resources>
