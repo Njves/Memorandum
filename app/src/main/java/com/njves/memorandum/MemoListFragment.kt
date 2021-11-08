@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -15,6 +17,7 @@ class MemoListFragment: Fragment() {
     private lateinit var edQuery: EditText
     private lateinit var rvMemo: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
+    private val memoListViewModel: MemoListViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -27,8 +30,9 @@ class MemoListFragment: Fragment() {
         rvMemo = view.findViewById(R.id.rv_memo)
         fabAdd = view.findViewById(R.id.fab_add)
         rvMemo.apply {
-            this.layoutManager = LinearLayoutManager(this@MemoListFragment.requireContext())
-            this.adapter = MemoAdapter(createList())
+            val layoutManager = LinearLayoutManager(this@MemoListFragment.requireContext())
+            this.layoutManager = layoutManager
+            this.adapter = adapter
         }
         return view
     }
@@ -36,15 +40,13 @@ class MemoListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fabAdd.setOnClickListener {
+
             Snackbar.make(it, "Make new memo", Snackbar.LENGTH_SHORT).show()
         }
+        memoListViewModel.memoLiveData.observe(requireActivity(), {
+
+        })
     }
 
-    private fun createList(): List<Memo> {
-        val list = mutableListOf<Memo>()
-        for(i in 1..10) {
-            list.add(Memo("1$i", "2$i"))
-        }
-        return list.toList()
-    }
+
 }

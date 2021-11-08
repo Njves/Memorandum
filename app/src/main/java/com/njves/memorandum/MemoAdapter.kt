@@ -3,6 +3,7 @@ package com.njves.memorandum
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MemoAdapter(val memoList: List<Memo>) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
@@ -13,14 +14,18 @@ class MemoAdapter(val memoList: List<Memo>) : RecyclerView.Adapter<MemoAdapter.M
     }
 
     override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
-
+        holder.bind(memoList[position])
     }
 
     override fun getItemCount(): Int = memoList.size
 
     inner class MemoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind() {
+        private val tvSubject: TextView = itemView.findViewById(R.id.tv_subject)
+        private val tvContent: TextView = itemView.findViewById(R.id.tv_content)
 
+        fun bind(memo: Memo) {
+            tvSubject.text = memo.subject
+            tvContent.text = memo.content
         }
     }
 }
