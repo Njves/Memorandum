@@ -7,5 +7,14 @@
     <fragment
         android:id="@+id/memoListFragment"
         android:name="com.njves.memorandum.MemoListFragment"
-        android:label="MemoListFragment" />
+        android:label="MemoListFragment" >
+        <action
+            android:id="@+id/action_memoListFragment_to_memoDeatilFragment"
+            app:destination="@id/memoDeatilFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/memoDeatilFragment"
+        android:name="com.njves.memorandum.detail.MemoDetailFragment"
+        android:label="MemoDetailFragment" />
 </navigation>

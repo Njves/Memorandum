@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import com.njves.memorandum.R
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-
+private const val TAG = "MemoDetailFragment"
 class MemoDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +20,8 @@ class MemoDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_memo_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_memo_detail, container, false)
+
+        return view
     }
 }

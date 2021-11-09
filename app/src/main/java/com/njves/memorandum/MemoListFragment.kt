@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,10 +48,11 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         super.onViewCreated(view, savedInstanceState)
         fabAdd.setOnClickListener {
             // TODO: Удалить
-            val memo = Memo()
-            memo.subject = "${(Math.random() * 66).toInt()}"
-            memo.content = "Мяу"
-            memoListViewModel.addMemo(memo)
+//            val memo = Memo()
+//            memo.subject = "${(Math.random() * 66).toInt()}"
+//            memo.content = "Мяу"
+//            memoListViewModel.addMemo(memo)
+            findNavController().navigate(R.id.action_memoListFragment_to_memoDeatilFragment)
             Snackbar.make(it, "Make new memo", Snackbar.LENGTH_SHORT).show()
         }
         memoListViewModel.memoLiveData.observe(viewLifecycleOwner, {
