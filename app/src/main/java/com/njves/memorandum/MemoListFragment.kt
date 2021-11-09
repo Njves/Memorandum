@@ -48,10 +48,11 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         super.onViewCreated(view, savedInstanceState)
         fabAdd.setOnClickListener {
             // TODO: Удалить
-//            val memo = Memo()
-//            memo.subject = "${(Math.random() * 66).toInt()}"
-//            memo.content = "Мяу"
-//            memoListViewModel.addMemo(memo)
+            val memo = Memo()
+            memo.subject = "${(Math.random() * 66).toInt()}"
+            memo.content = "Мяу"
+            memoListViewModel.addMemo(memo)
+            Log.d(TAG, memo.toString())
             findNavController().navigate(R.id.action_memoListFragment_to_memoDeatilFragment)
             Snackbar.make(it, "Make new memo", Snackbar.LENGTH_SHORT).show()
         }

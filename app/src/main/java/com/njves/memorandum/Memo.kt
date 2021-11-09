@@ -1,5 +1,8 @@
 package com.njves.memorandum
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
-data class Memo(val id: UUID = UUID.randomUUID(), var subject: String = "", var content: String = "")
+@Entity
+data class Memo(@PrimaryKey val id: UUID = UUID.randomUUID(), var subject: String = "", var content: String = "")
