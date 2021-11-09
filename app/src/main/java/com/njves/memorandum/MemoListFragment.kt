@@ -1,11 +1,14 @@
 package com.njves.memorandum
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -16,12 +19,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
 const val TAG = "MemoListFragment"
-class MemoListFragment: Fragment() {
+class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     private lateinit var edQuery: EditText
     private lateinit var rvMemo: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
     private val memoListViewModel: MemoListViewModel by viewModels()
-    private val adapter: MemoAdapter = MemoAdapter(listOf())
+    private val adapter: MemoAdapter = MemoAdapter(listOf(), this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,8 +46,9 @@ class MemoListFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fabAdd.setOnClickListener {
+            // TODO: Удалить
             val memo = Memo()
-            memo.subject = "${Math.random() * 66}"
+            memo.subject = "${(Math.random() * 66).toInt()}"
             memo.content = "Мяу"
             memoListViewModel.addMemo(memo)
             Snackbar.make(it, "Make new memo", Snackbar.LENGTH_SHORT).show()
@@ -54,14 +58,29 @@ class MemoListFragment: Fragment() {
         })
     }
 
-    fun updateUi(list: MutableList<Memo>) {
+    override fun onStart() {
+        super.onStart()
+        edQuery.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val l = memoListViewModel.searchMemoBySubject(s.toString())
+                updateUi(l)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun updateUi(list: MutableList<Memo>) {
         val callback = MemoDiffUtilCallback(adapter.memoList, list)
         val result = DiffUtil.calculateDiff(callback)
         adapter.memoList = list.toList()
         result.dispatchUpdatesTo(adapter)
     }
 
-
-
+    override fun onClick(memo: Memo) {
+        memoListViewModel.removeMemo(memo)
+    }
 
 }
