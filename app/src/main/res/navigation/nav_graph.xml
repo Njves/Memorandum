@@ -9,12 +9,12 @@
         android:name="com.njves.memorandum.MemoListFragment"
         android:label="MemoListFragment" >
         <action
-            android:id="@+id/action_memoListFragment_to_memoDeatilFragment"
-            app:destination="@id/memoDeatilFragment" />
+            android:id="@+id/action_memoListFragment_to_memoDetailFragment"
+            app:destination="@id/memoDetailFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/memoDeatilFragment"
+        android:id="@+id/memoDetailFragment"
         android:name="com.njves.memorandum.detail.MemoDetailFragment"
         android:label="MemoDetailFragment" />
 </navigation>

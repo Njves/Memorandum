@@ -6,8 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".detail.MemoDetailFragment">
 
-    <TextView
-        android:id="@+id/tv_subject"
+    <EditText
+        android:id="@+id/ed_subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,17 +16,20 @@
         android:paddingTop="8dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:hint="@string/hint_subject"/>
 
     <EditText
+        android:id="@+id/ed_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_subject"
+        android:gravity="top"
+        android:hint="@string/hint_content"
+        android:inputType="text|textMultiLine"
+        app:layout_constraintTop_toBottomOf="@id/ed_subject"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:inputType="text|textMultiLine"
-        android:gravity="top"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

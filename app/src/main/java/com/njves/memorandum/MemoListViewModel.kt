@@ -5,23 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MemoListViewModel : ViewModel() {
+    private val repository: MemoRepository = MemoRepository.get()
 
-    val memoLiveData: MutableLiveData<MutableList<Memo>> by lazy {
-        MutableLiveData<MutableList<Memo>>()
-    }
+    val memoLiveData: LiveData<List<Memo>> = repository.getList()
 
     fun addMemo(memo: Memo) {
-        val list =  memoLiveData.value ?: mutableListOf()
-        list.add(memo)
-        memoLiveData.value = list
+        repository.addMemo(memo)
     }
 
     fun removeMemo(memo: Memo) {
-        val list =  memoLiveData.value ?: mutableListOf()
-        list.remove(memo)
-        memoLiveData.value = list
+        repository.removeMemo(memo)
     }
 
+    //  Функция поиска элементов списка по стартовому суффиксу
     fun searchMemoBySubject(query: String): MutableList<Memo> {
         val memos = memoLiveData.value ?: listOf()
         val match = mutableListOf<Memo>()

@@ -27,7 +27,6 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     private lateinit var fabAdd: FloatingActionButton
     private val memoListViewModel: MemoListViewModel by viewModels()
     private val adapter: MemoAdapter = MemoAdapter(listOf(), this)
-    private val currentList: MutableList<Memo> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,24 +48,12 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fabAdd.setOnClickListener {
-            // TODO: Удалить
-            val memo = Memo()
-            memo.subject = "${(Math.random() * 66).toInt()}"
-            memo.content = "Мяу"
-            memoListViewModel.addMemo(memo)
-            Log.d(TAG, memo.toString())
-            findNavController().navigate(R.id.action_memoListFragment_to_memoDeatilFragment)
-            Snackbar.make(it, "Make new memo", Snackbar.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_memoListFragment_to_memoDetailFragment)
         }
         memoListViewModel.memoLiveData.observe(viewLifecycleOwner, {
-            currentList.addAll(it)
-            updateUi(currentList)
+            updateUi(it)
         })
 
-        MemoRepository(requireContext()).getList().observe(viewLifecycleOwner, {
-            currentList.addAll(it)
-            updateUi(currentList)
-        })
     }
 
     override fun onStart() {
@@ -75,8 +62,8 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val l = memoListViewModel.searchMemoBySubject(s.toString())
-                updateUi(l)
+                val matches = memoListViewModel.searchMemoBySubject(s.toString())
+                updateUi(matches)
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -96,6 +83,5 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
 
     override fun onStop() {
         super.onStop()
-        currentList.clear()
     }
 }
