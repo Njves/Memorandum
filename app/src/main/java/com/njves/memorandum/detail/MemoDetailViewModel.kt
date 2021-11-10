@@ -8,6 +8,8 @@ class MemoDetailViewModel: ViewModel() {
     private val repository: MemoRepository = MemoRepository.get()
 
     fun addMemo(memo: Memo) {
-        repository.addMemo(memo)
+        if(!memo.isEmpty()) {
+            repository.addMemo(memo)
+        }
     }
 }

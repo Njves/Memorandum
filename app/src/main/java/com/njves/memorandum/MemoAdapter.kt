@@ -6,7 +6,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.Exception
 
-class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemListener) : RecyclerView.Adapter<MemoAdapter.MemoViewHolder>() {
+class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemListener) :
+    RecyclerView.Adapter<MemoAdapter.MemoViewHolder>(),
+    ItemTouchHelperAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.memo_item, parent, false)
@@ -39,7 +41,14 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
 
     interface OnClickItemListener {
         fun onClick(memo: Memo)
+        fun onSwipe(memo: Memo)
     }
+
+    override fun onItemDismiss(position: Int) {
+        onClickListener.onSwipe(memoList[position])
+    }
+
+
 
 
 }

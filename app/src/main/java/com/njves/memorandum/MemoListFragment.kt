@@ -13,10 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -41,7 +38,11 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
             val layoutManager = LinearLayoutManager(this@MemoListFragment.requireContext())
             this.layoutManager = layoutManager
             this.adapter = this@MemoListFragment.adapter
+
         }
+        val callback = SimpleItemTouchHelperCallback(this.adapter)
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(rvMemo)
         return view
     }
 
@@ -55,6 +56,8 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         })
 
     }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -78,6 +81,10 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     }
 
     override fun onClick(memo: Memo) {
+
+    }
+
+    override fun onSwipe(memo: Memo) {
         memoListViewModel.removeMemo(memo)
     }
 

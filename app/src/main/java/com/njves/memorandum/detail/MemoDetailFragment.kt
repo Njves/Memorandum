@@ -3,6 +3,7 @@ package com.njves.memorandum.detail
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,18 +12,29 @@ import android.widget.EditText
 import androidx.fragment.app.viewModels
 import com.njves.memorandum.Memo
 import com.njves.memorandum.R
+import java.util.*
 
 
 private const val TAG = "MemoDetailFragment"
+private const val ARGS_ID = "id"
 class MemoDetailFragment : Fragment() {
     private var memo: Memo = Memo()
     private lateinit var edSubject: EditText
     private lateinit var edContent: EditText
     private val viewModel: MemoDetailViewModel by viewModels()
 
+    companion object {
+        fun newInstance(memoId: UUID): MemoDetailFragment {
+            val args = Bundle()
+            args.putSerializable(ARGS_ID, memoId)
+            return MemoDetailFragment().apply {
+                this.arguments = args
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        arguments?.getSerializable(ARGS_ID)
     }
 
     override fun onCreateView(
