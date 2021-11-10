@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,6 +27,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     private lateinit var fabAdd: FloatingActionButton
     private val memoListViewModel: MemoListViewModel by viewModels()
     private val adapter: MemoAdapter = MemoAdapter(listOf(), this)
+    private val currentList: MutableList<Memo> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +59,13 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
             Snackbar.make(it, "Make new memo", Snackbar.LENGTH_SHORT).show()
         }
         memoListViewModel.memoLiveData.observe(viewLifecycleOwner, {
-            updateUi(it)
+            currentList.addAll(it)
+            updateUi(currentList)
+        })
+
+        MemoRepository(requireContext()).getList().observe(viewLifecycleOwner, {
+            currentList.addAll(it)
+            updateUi(currentList)
         })
     }
 
@@ -75,7 +83,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         })
     }
 
-    private fun updateUi(list: MutableList<Memo>) {
+    private fun updateUi(list: List<Memo>) {
         val callback = MemoDiffUtilCallback(adapter.memoList, list)
         val result = DiffUtil.calculateDiff(callback)
         adapter.memoList = list.toList()
@@ -86,4 +94,8 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         memoListViewModel.removeMemo(memo)
     }
 
+    override fun onStop() {
+        super.onStop()
+        currentList.clear()
+    }
 }
