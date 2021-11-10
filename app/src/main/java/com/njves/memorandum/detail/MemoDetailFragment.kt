@@ -23,7 +23,7 @@ class MemoDetailFragment : Fragment() {
     private var memo: Memo = Memo()
     private lateinit var edSubject: EditText
     private lateinit var edContent: EditText
-    private var mode: Int = UPDATE_MODE
+    private var mode: Int = CREATE_MODE
     private val viewModel: MemoDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +46,12 @@ class MemoDetailFragment : Fragment() {
         edContent = view.findViewById(R.id.ed_content)
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        edSubject.setText(memo.subject)
+        edContent.setText(memo.content)
     }
 
     override fun onStart() {
@@ -82,9 +88,10 @@ class MemoDetailFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        Log.d(TAG, mode.toString())
         when(mode) {
             UPDATE_MODE -> {
-                // update
+                viewModel.updateMemo(memo)
             }
             CREATE_MODE -> {
                 viewModel.addMemo(memo)

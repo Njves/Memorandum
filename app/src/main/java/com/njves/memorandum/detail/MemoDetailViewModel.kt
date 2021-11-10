@@ -18,4 +18,8 @@ class MemoDetailViewModel: ViewModel() {
             repository.addMemo(memo)
         }
     }
+
+    fun updateMemo(memo: Memo) {
+        repository.updateMemo(memo)
+    }
 }

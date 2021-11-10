@@ -51,4 +51,8 @@ class MemoRepository(val context: Context) {
         }
     }
 
+    fun updateMemo(memo: Memo) {
+        memoDao.updateMemo(memo)
+    }
+
 }
