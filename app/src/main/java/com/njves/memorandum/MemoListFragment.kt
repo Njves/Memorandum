@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.njves.memorandum.detail.ARGS_ID
 
 const val TAG = "MemoListFragment"
 class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
@@ -52,6 +53,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
             findNavController().navigate(R.id.action_memoListFragment_to_memoDetailFragment)
         }
         memoListViewModel.memoLiveData.observe(viewLifecycleOwner, {
+            Log.d(TAG, it.toString())
             updateUi(it)
         })
 
@@ -74,6 +76,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     }
 
     private fun updateUi(list: List<Memo>) {
+
         val callback = MemoDiffUtilCallback(adapter.memoList, list)
         val result = DiffUtil.calculateDiff(callback)
         adapter.memoList = list.toList()
@@ -81,7 +84,9 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     }
 
     override fun onClick(memo: Memo) {
-
+        val bundle = Bundle()
+        bundle.putSerializable(ARGS_ID, memo.id)
+        findNavController().navigate(R.id.memoDetailFragment, bundle)
     }
 
     override fun onSwipe(memo: Memo) {

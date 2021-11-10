@@ -16,25 +16,25 @@ import java.util.*
 
 
 private const val TAG = "MemoDetailFragment"
-private const val ARGS_ID = "id"
+const val ARGS_ID = "id"
+const val CREATE_MODE = 0
+const val UPDATE_MODE = 1
 class MemoDetailFragment : Fragment() {
     private var memo: Memo = Memo()
     private lateinit var edSubject: EditText
     private lateinit var edContent: EditText
+    private var mode: Int = UPDATE_MODE
     private val viewModel: MemoDetailViewModel by viewModels()
 
-    companion object {
-        fun newInstance(memoId: UUID): MemoDetailFragment {
-            val args = Bundle()
-            args.putSerializable(ARGS_ID, memoId)
-            return MemoDetailFragment().apply {
-                this.arguments = args
-            }
-        }
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getSerializable(ARGS_ID)
+        arguments?.getSerializable(ARGS_ID)?.let {
+            mode = UPDATE_MODE
+            memo = viewModel.findMemoById(it as UUID) ?: return
+        }
+
+
+
     }
 
     override fun onCreateView(
@@ -82,6 +82,15 @@ class MemoDetailFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.addMemo(memo)
+        when(mode) {
+            UPDATE_MODE -> {
+                // update
+            }
+            CREATE_MODE -> {
+                viewModel.addMemo(memo)
+            }
+        }
     }
+
+
 }
