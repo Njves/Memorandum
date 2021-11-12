@@ -1,8 +1,11 @@
 package com.njves.memorandum
 
 import android.content.Context
+import android.os.Build
 import android.view.*
+import android.widget.Magnifier
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.Exception
 
@@ -28,6 +31,7 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
         private lateinit var memo: Memo
 
 
+
         fun bind(memo: Memo) {
             this.memo = memo
             tvSubject.text = memo.subject
@@ -35,7 +39,6 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
             itemView.setOnClickListener {
                 onClickListener.onClick(memo)
             }
-
         }
     }
 
