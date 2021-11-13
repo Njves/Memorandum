@@ -1,17 +1,12 @@
 package com.njves.memorandum
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MemoListViewModel : ViewModel() {
     private val repository: MemoRepository = MemoRepository.get()
 
     val memoLiveData: LiveData<List<Memo>> = repository.getList()
-
-    fun addMemo(memo: Memo) {
-        repository.addMemo(memo)
-    }
 
     fun removeMemo(memo: Memo) {
         repository.removeMemo(memo)
@@ -22,9 +17,8 @@ class MemoListViewModel : ViewModel() {
         val memos = memoLiveData.value ?: listOf()
         val match = mutableListOf<Memo>()
         memos.forEach {
-            if(it.subject.startsWith(query, true)) {
+            if(it.subject.startsWith(query, true))
                 match.add(it)
-            }
         }
         return match
     }

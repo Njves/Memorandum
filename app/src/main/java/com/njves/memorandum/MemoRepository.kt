@@ -10,9 +10,10 @@ import com.njves.memorandum.database.MIGRATION_1_2
 import com.njves.memorandum.database.MemoDatabase
 import java.lang.IllegalStateException
 import java.util.*
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class MemoRepository(val context: Context) {
+class MemoRepository(private val context: Context) {
 
     companion object {
         private var instance: MemoRepository? = null
@@ -34,9 +35,11 @@ class MemoRepository(val context: Context) {
     ).allowMainThreadQueries().addMigrations(MIGRATION_1_2).build()
 
     private val memoDao = db.memoDao()
-    val executor = Executors.newSingleThreadExecutor()
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     fun getList(): LiveData<List<Memo>> = memoDao.getAll()
+
+
 
     fun getMemo(id: UUID): Memo = memoDao.getMemo(id)
 

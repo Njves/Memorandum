@@ -31,6 +31,8 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         .setEnterAnim(R.anim.nav_default_enter_anim)
         .setExitAnim(R.anim.nav_default_exit_anim)
         .build()
+    private var timerRemove: CountDownTimer? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,21 +100,34 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
             animNavOptions)
     }
 
-    override fun onSwipe(memo: Memo, position: Int) {
-
-        object : CountDownTimer(7000, 7000) {
+    private fun startRemoveTimer(memo: Memo): CountDownTimer {
+        var snackbar: Snackbar? = null
+        val timer = object : CountDownTimer(4000, 4000) {
             override fun onTick(millisUntilFinished: Long) {
-                Snackbar.make(root, "Отминет", 7000).setAction("отминет") {
+                snackbar = Snackbar.make(root, "Вы удалили заметку", 4000).setAction(getString(R.string.action_remove)) {
                     adapter.notifyDataSetChanged()
                     cancel()
-                }.show()
+                }
+                snackbar?.show()
             }
 
             override fun onFinish() {
+                snackbar?.dismiss()
                 memoListViewModel.removeMemo(memo)
-
             }
-        }.start()
+        }
+        timer.start()
+        return timer
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "OnStop")
+        timerRemove?.onFinish()
+    }
+
+    override fun onSwipe(memo: Memo, position: Int) {
+        timerRemove = startRemoveTimer(memo)
     }
 
 }

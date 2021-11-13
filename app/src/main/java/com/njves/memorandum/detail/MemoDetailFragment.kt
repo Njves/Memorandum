@@ -1,16 +1,15 @@
 package com.njves.memorandum.detail
 
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.njves.memorandum.Memo
@@ -30,7 +29,7 @@ class MemoDetailFragment : Fragment() {
     private lateinit var tvDate: TextView
     private var mode: Int = CREATE_MODE
     private val viewModel: MemoDetailViewModel by viewModels()
-
+    private var actionBar: ActionBar? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.getSerializable(ARGS_ID)?.let {
@@ -50,8 +49,10 @@ class MemoDetailFragment : Fragment() {
         edSubject = view.findViewById(R.id.ed_subject)
         edContent = view.findViewById(R.id.ed_content)
         tvDate = view.findViewById(R.id.tv_date)
-
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = memo.subject
+        actionBar = (requireActivity() as AppCompatActivity).supportActionBar
+        if(memo.subject.isNotEmpty()) {
+            actionBar?.title = memo.subject
+        }
         return view
     }
 
@@ -65,7 +66,6 @@ class MemoDetailFragment : Fragment() {
 
             }
         }
-
     }
 
     override fun onStart() {

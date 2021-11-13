@@ -1,6 +1,5 @@
 package com.njves.memorandum.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.njves.memorandum.Memo
 import com.njves.memorandum.MemoRepository
