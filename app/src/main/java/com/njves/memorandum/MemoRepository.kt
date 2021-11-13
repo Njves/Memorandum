@@ -39,7 +39,7 @@ class MemoRepository(private val context: Context) {
 
     fun getList(): LiveData<List<Memo>> = memoDao.getAll()
 
-
+    fun getSortedList(): LiveData<List<Memo>> = memoDao.getMemosByDate()
 
     fun getMemo(id: UUID): Memo = memoDao.getMemo(id)
 

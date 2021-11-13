@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 class MemoListViewModel : ViewModel() {
     private val repository: MemoRepository = MemoRepository.get()
 
-    val memoLiveData: LiveData<List<Memo>> = repository.getList()
+    var memoLiveData: LiveData<List<Memo>> = repository.getSortedList()
 
     fun removeMemo(memo: Memo) {
         repository.removeMemo(memo)

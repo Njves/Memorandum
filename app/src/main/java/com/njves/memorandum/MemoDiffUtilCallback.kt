@@ -14,6 +14,7 @@ class MemoDiffUtilCallback(private val oldList: List<Memo>, private val newList:
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition].subject == newList[newItemPosition].subject
                 && oldList[oldItemPosition].content == newList[newItemPosition].content
+                && oldList[oldItemPosition].date == newList[newItemPosition].date
     }
 
 }

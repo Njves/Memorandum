@@ -63,10 +63,13 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         fabAdd.setOnClickListener {
             findNavController().navigate(R.id.action_memoListFragment_to_memoDetailFragment, null, animNavOptions)
         }
+
         memoListViewModel.memoLiveData.observe(viewLifecycleOwner, {
             Log.d(TAG, it.toString())
             updateUi(it)
         })
+
+
 
     }
 
@@ -102,6 +105,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
 
     private fun startRemoveTimer(memo: Memo): CountDownTimer {
         var snackbar: Snackbar? = null
+
         val timer = object : CountDownTimer(4000, 4000) {
             override fun onTick(millisUntilFinished: Long) {
                 snackbar = Snackbar.make(root, "Вы удалили заметку", 4000).setAction(getString(R.string.action_remove)) {

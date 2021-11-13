@@ -1,10 +1,12 @@
 package com.njves.memorandum.detail
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
@@ -62,9 +64,6 @@ class MemoDetailFragment : Fragment() {
         edContent.setText(memo.content)
         tvDate.apply {
             text = memo.getFormatDate()
-            setOnClickListener {
-
-            }
         }
     }
 
@@ -98,6 +97,22 @@ class MemoDetailFragment : Fragment() {
 
             }
         })
+
+        tvDate.setOnClickListener {
+            val newCalendar = GregorianCalendar()
+            val listener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                newCalendar.set(Calendar.YEAR, year)
+                newCalendar.set(Calendar.MONTH, monthOfYear)
+                newCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                memo.date = newCalendar.time
+                tvDate.text = memo.getFormatDate()
+            }
+            val year = newCalendar.get(Calendar.YEAR)
+            val month = newCalendar.get(Calendar.MONTH)
+            val day = newCalendar.get(Calendar.DAY_OF_MONTH)
+            val datePickerDialog = DatePickerDialog(requireContext(), listener, year, month, day)
+            datePickerDialog.show()
+        }
     }
 
     private fun saveMemo() {

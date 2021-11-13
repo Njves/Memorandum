@@ -10,7 +10,7 @@ interface MemoDao {
     @Query("SELECT * FROM memo")
     fun getAll(): LiveData<List<Memo>>
 
-    @Query("SELECT * FROM memo ORDER BY date")
+    @Query("SELECT * FROM memo ORDER BY date DESC")
     fun getMemosByDate(): LiveData<List<Memo>>
 
     @Query("SELECT * FROM memo WHERE id=(:id)")

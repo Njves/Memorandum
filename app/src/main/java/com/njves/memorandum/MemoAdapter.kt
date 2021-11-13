@@ -24,12 +24,14 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
     inner class MemoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvSubject: TextView = itemView.findViewById(R.id.tv_subject)
         private val tvContent: TextView = itemView.findViewById(R.id.tv_content)
+        private val tvDate: TextView = itemView.findViewById(R.id.tv_date)
         private lateinit var memo: Memo
 
         fun bind(memo: Memo) {
             this.memo = memo
             tvSubject.text = memo.subject
             tvContent.text = memo.content
+            tvDate.text = memo.getFormatDate()
             if(memo.subject.isEmpty()) {
                 tvSubject.setTextColor(Color.GRAY)
                 tvSubject.text = "Без заголовка"
