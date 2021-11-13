@@ -1,21 +1,17 @@
 package com.njves.memorandum
 
-import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Magnifier
-import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
@@ -28,6 +24,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     private lateinit var edQuery: EditText
     private lateinit var rvMemo: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
+    private lateinit var root: ConstraintLayout
     private val memoListViewModel: MemoListViewModel by viewModels()
     private val adapter: MemoAdapter = MemoAdapter(listOf(), this)
     private val animNavOptions: NavOptions = NavOptions.Builder()
@@ -40,10 +37,11 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.memo_list_fragment, container, false)
+        val view = inflater.inflate(R.layout.fragment_memo_list, container, false)
         edQuery = view.findViewById(R.id.ed_query)
         rvMemo = view.findViewById(R.id.rv_memo)
         fabAdd = view.findViewById(R.id.fab_add)
+        root = view.findViewById(R.id.root)
         rvMemo.apply {
             val layoutManager = LinearLayoutManager(this@MemoListFragment.requireContext())
             this.layoutManager = layoutManager
@@ -57,6 +55,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         return view
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fabAdd.setOnClickListener {
@@ -68,8 +67,6 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         })
 
     }
-
-
 
     override fun onStart() {
         super.onStart()
@@ -86,7 +83,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     }
 
     private fun updateUi(list: List<Memo>) {
-
+        Log.d(TAG, adapter.memoList.toString())
         val callback = MemoDiffUtilCallback(adapter.memoList, list)
         val result = DiffUtil.calculateDiff(callback)
         adapter.memoList = list.toList()
@@ -101,11 +98,21 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
             animNavOptions)
     }
 
-    override fun onSwipe(memo: Memo) {
-        memoListViewModel.removeMemo(memo)
+    override fun onSwipe(memo: Memo, position: Int) {
+
+        object : CountDownTimer(7000, 7000) {
+            override fun onTick(millisUntilFinished: Long) {
+                Snackbar.make(root, "Отминет", 7000).setAction("отминет") {
+                    adapter.notifyDataSetChanged()
+                    cancel()
+                }.show()
+            }
+
+            override fun onFinish() {
+                memoListViewModel.removeMemo(memo)
+
+            }
+        }.start()
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
 }

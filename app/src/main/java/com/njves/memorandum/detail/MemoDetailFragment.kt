@@ -1,6 +1,7 @@
 package com.njves.memorandum.detail
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -9,6 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import com.njves.memorandum.Memo
 import com.njves.memorandum.R
@@ -23,6 +27,7 @@ class MemoDetailFragment : Fragment() {
     private var memo: Memo = Memo()
     private lateinit var edSubject: EditText
     private lateinit var edContent: EditText
+    private lateinit var tvDate: TextView
     private var mode: Int = CREATE_MODE
     private val viewModel: MemoDetailViewModel by viewModels()
 
@@ -32,6 +37,8 @@ class MemoDetailFragment : Fragment() {
             mode = UPDATE_MODE
             memo = viewModel.findMemoById(it as UUID) ?: return
         }
+        Log.d(TAG, memo.toString())
+        Log.d(TAG, "mode $mode")
 
 
 
@@ -44,7 +51,9 @@ class MemoDetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_memo_detail, container, false)
         edSubject = view.findViewById(R.id.ed_subject)
         edContent = view.findViewById(R.id.ed_content)
+        tvDate = view.findViewById(R.id.tv_date)
 
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = memo.subject
         return view
     }
 
@@ -52,6 +61,13 @@ class MemoDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         edSubject.setText(memo.subject)
         edContent.setText(memo.content)
+        tvDate.apply {
+            text = memo.getFormatDate()
+            setOnClickListener {
+
+            }
+        }
+
     }
 
     override fun onStart() {
@@ -88,7 +104,7 @@ class MemoDetailFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, mode.toString())
+        Log.d(TAG, "OnStop current $memo")
         when(mode) {
             UPDATE_MODE -> {
                 viewModel.updateMemo(memo)

@@ -6,17 +6,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".detail.MemoDetailFragment">
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/ed_subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="28sp"
-        android:paddingTop="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@android:color/transparent"
         android:hint="@string/hint_subject"/>
+
+    <LinearLayout
+        android:id="@+id/divide"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/ed_subject"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Единица мемо"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"/>
+    </LinearLayout>
 
     <EditText
         android:id="@+id/ed_content"
@@ -25,12 +54,15 @@
         android:gravity="top"
         android:hint="@string/hint_content"
         android:inputType="text|textMultiLine"
-        app:layout_constraintTop_toBottomOf="@id/ed_subject"
+        app:layout_constraintTop_toBottomOf="@id/divide"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@android:color/transparent"
-        android:padding="8dp"/>
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

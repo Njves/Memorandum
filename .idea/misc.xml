@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Projects/android/Memorandum/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
         <entry key="..\:/Projects/android/Memorandum/app/src/main/res/layout/fragment_memo_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Projects/android/Memorandum/app/src/main/res/layout/fragment_memo_list.xml" value="0.2259963768115942" />
+        <entry key="..\:/Projects/android/Memorandum/app/src/main/res/layout/item_memo.xml" value="0.14492753623188406" />
         <entry key="..\:/Projects/android/Memorandum/app/src/main/res/layout/memo_item.xml" value="0.264" />
         <entry key="..\:/Projects/android/Memorandum/app/src/main/res/layout/memo_list_fragment.xml" value="0.2" />
       </map>

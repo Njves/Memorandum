@@ -1,20 +1,15 @@
 package com.njves.memorandum
 
-import android.content.Context
-import android.os.Build
 import android.view.*
-import android.widget.Magnifier
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.Exception
 
 class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemListener) :
     RecyclerView.Adapter<MemoAdapter.MemoViewHolder>(),
     ItemTouchHelperAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.memo_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_memo, parent, false)
         return MemoViewHolder(view)
 
     }
@@ -44,11 +39,11 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
 
     interface OnClickItemListener {
         fun onClick(memo: Memo)
-        fun onSwipe(memo: Memo)
+        fun onSwipe(memo: Memo, position: Int)
     }
 
     override fun onItemDismiss(position: Int) {
-        onClickListener.onSwipe(memoList[position])
+        onClickListener.onSwipe(memoList[position], position)
     }
 
 
