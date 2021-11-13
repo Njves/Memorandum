@@ -1,5 +1,6 @@
 package com.njves.memorandum
 
+import android.graphics.Color
 import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,10 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
             this.memo = memo
             tvSubject.text = memo.subject
             tvContent.text = memo.content
+            if(memo.content.isEmpty()) {
+                tvContent.setTextColor(Color.GRAY)
+                tvContent.text = "Нет описания"
+            }
             itemView.setOnClickListener {
                 onClickListener.onClick(memo)
             }
