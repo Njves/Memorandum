@@ -26,12 +26,14 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
         private val tvContent: TextView = itemView.findViewById(R.id.tv_content)
         private lateinit var memo: Memo
 
-
-
         fun bind(memo: Memo) {
             this.memo = memo
             tvSubject.text = memo.subject
             tvContent.text = memo.content
+            if(memo.subject.isEmpty()) {
+                tvSubject.setTextColor(Color.GRAY)
+                tvSubject.text = "Без заголовка"
+            }
             if(memo.content.isEmpty()) {
                 tvContent.setTextColor(Color.GRAY)
                 tvContent.text = "Нет описания"

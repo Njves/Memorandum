@@ -5,15 +5,14 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.njves.memorandum.Memo
 import com.njves.memorandum.R
 import java.util.*
@@ -23,6 +22,7 @@ private const val TAG = "MemoDetailFragment"
 const val ARGS_ID = "id"
 const val CREATE_MODE = 0
 const val UPDATE_MODE = 1
+
 class MemoDetailFragment : Fragment() {
     private var memo: Memo = Memo()
     private lateinit var edSubject: EditText
@@ -39,9 +39,7 @@ class MemoDetailFragment : Fragment() {
         }
         Log.d(TAG, memo.toString())
         Log.d(TAG, "mode $mode")
-
-
-
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -102,18 +100,38 @@ class MemoDetailFragment : Fragment() {
         })
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "OnStop current $memo")
+    private fun saveMemo() {
         when(mode) {
             UPDATE_MODE -> {
                 viewModel.updateMemo(memo)
             }
             CREATE_MODE -> {
                 viewModel.addMemo(memo)
+                mode = UPDATE_MODE
             }
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "OnStop current $memo")
+        saveMemo()
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_memo_detail, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.action_add -> {
+                saveMemo()
+                findNavController().popBackStack()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
 }
