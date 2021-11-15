@@ -1,5 +1,9 @@
 package com.njves.memorandum
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -10,6 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
@@ -20,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.njves.memorandum.detail.ARGS_ID
 
 const val TAG = "MemoListFragment"
+
 class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
     private lateinit var edQuery: EditText
     private lateinit var rvMemo: RecyclerView
@@ -32,7 +41,6 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         .setExitAnim(R.anim.nav_default_exit_anim)
         .build()
     private var timerRemove: CountDownTimer? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
