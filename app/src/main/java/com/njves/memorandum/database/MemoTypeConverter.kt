@@ -1,5 +1,6 @@
 package com.njves.memorandum.database
 
+import android.net.Uri
 import androidx.room.TypeConverter
 import java.util.*
 
@@ -25,4 +26,5 @@ class MemoTypeConverters {
     fun fromDate(date: Date?): Long? {
         return date?.time
     }
+
 }

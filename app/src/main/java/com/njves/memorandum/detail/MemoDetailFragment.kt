@@ -6,17 +6,27 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.njves.memorandum.Memo
 import com.njves.memorandum.R
 import java.util.*
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Rect
+import android.net.Uri
+import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 private const val TAG = "MemoDetailFragment"
@@ -29,9 +39,23 @@ class MemoDetailFragment : Fragment() {
     private lateinit var edSubject: EditText
     private lateinit var edContent: EditText
     private lateinit var tvDate: TextView
+    private lateinit var rvImages: RecyclerView
+    private lateinit var btnAddImage: Button
     private var mode: Int = CREATE_MODE
     private val viewModel: MemoDetailViewModel by viewModels()
     private var actionBar: ActionBar? = null
+    private var adapter = ImageAdapter(mutableListOf())
+    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            GlobalScope.launch {
+                val bitmap = Picasso.get().load(uri).resize(300, 350).get()
+                requireActivity().runOnUiThread {
+                    adapter.addItem(bitmap)
+                }
+            }
+
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.getSerializable(ARGS_ID)?.let {
@@ -51,6 +75,8 @@ class MemoDetailFragment : Fragment() {
         edSubject = view.findViewById(R.id.ed_subject)
         edContent = view.findViewById(R.id.ed_content)
         tvDate = view.findViewById(R.id.tv_date)
+        rvImages = view.findViewById(R.id.rv_images)
+        btnAddImage = view.findViewById(R.id.btn_add_image)
         actionBar = (requireActivity() as AppCompatActivity).supportActionBar
         if(memo.subject.isNotEmpty()) {
             actionBar?.title = memo.subject
@@ -64,6 +90,10 @@ class MemoDetailFragment : Fragment() {
         edContent.setText(memo.content)
         tvDate.apply {
             text = memo.getFormatDate()
+        }
+        rvImages.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = this@MemoDetailFragment.adapter
         }
     }
 
@@ -113,8 +143,16 @@ class MemoDetailFragment : Fragment() {
             val datePickerDialog = DatePickerDialog(requireContext(), listener, year, month, day)
             datePickerDialog.show()
         }
-    }
 
+
+
+
+        btnAddImage.setOnClickListener {
+            getContent.launch("image/*")
+        }
+
+
+    }
     private fun saveMemo() {
         when(mode) {
             UPDATE_MODE -> {

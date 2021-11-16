@@ -111,6 +111,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
                 snackbar = Snackbar.make(root, "Вы удалили заметку", 4000).setAction(getString(R.string.action_remove)) {
                     adapter.notifyDataSetChanged()
                     cancel()
+                    timerRemove = null
                 }
                 snackbar?.show()
             }
