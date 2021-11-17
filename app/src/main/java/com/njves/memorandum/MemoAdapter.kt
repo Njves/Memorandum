@@ -31,7 +31,7 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
             this.memo = memo
             tvSubject.text = memo.subject
             tvContent.text = memo.content
-            tvDate.text = memo.getFormatDate()
+            tvDate.text = memo.formatDate
             if(memo.subject.isEmpty()) {
                 tvSubject.setTextColor(Color.GRAY)
                 tvSubject.text = "Без заголовка"

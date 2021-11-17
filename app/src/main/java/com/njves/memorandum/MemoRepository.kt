@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations
 import androidx.room.Room
 import com.njves.memorandum.database.MIGRATION_1_2
 import com.njves.memorandum.database.MemoDatabase
+import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -36,6 +37,7 @@ class MemoRepository(private val context: Context) {
 
     private val memoDao = db.memoDao()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
+    private val filesDir = context.applicationContext.filesDir
 
     fun getList(): LiveData<List<Memo>> = memoDao.getAll()
 

@@ -1,6 +1,7 @@
 package com.njves.memorandum
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,10 +11,11 @@ data class Memo(@PrimaryKey val id: UUID = UUID.randomUUID(), var subject: Strin
     fun isEmpty(): Boolean {
         return subject.isBlank() && content.isBlank()
     }
+    @Ignore
+    val sdf = SimpleDateFormat("dd.MM.yyyy, HH:mm", Locale.getDefault())
+
     // Метод возвращающий форматированную строку даты и времени
-    fun getFormatDate(): String {
-        val sdf = SimpleDateFormat("dd.MM.yyyy, HH:mm", Locale.getDefault())
-        return sdf.format(date)
-    }
+    val formatDate
+    get() = sdf.format(date)
 
 }

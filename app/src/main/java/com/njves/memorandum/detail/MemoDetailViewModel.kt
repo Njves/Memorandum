@@ -3,6 +3,7 @@ package com.njves.memorandum.detail
 import androidx.lifecycle.ViewModel
 import com.njves.memorandum.Memo
 import com.njves.memorandum.MemoRepository
+import java.io.File
 import java.util.*
 
 class MemoDetailViewModel: ViewModel() {
@@ -20,5 +21,9 @@ class MemoDetailViewModel: ViewModel() {
 
     fun updateMemo(memo: Memo) {
         repository.updateMemo(memo)
+    }
+
+    fun getPhotoFile(memo: Memo): File {
+        return repository.getPhotoFile(memo)
     }
 }

@@ -58,22 +58,4 @@ class TimeNotification(private val context: Context) {
             notify(1, notify)
         }
     }
-
-    fun setAlarm() {
-        val notifyTime: Calendar = GregorianCalendar()
-        notifyTime.set(Calendar.HOUR_OF_DAY, 4)
-        notifyTime.set(Calendar.MINUTE, 26)
-        notifyTime.set(Calendar.SECOND, 0)
-
-        val intent = Intent(context, NotificationReceiver::class.java)
-        val pendingIntent =
-            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
-        alarmManager!!.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            notifyTime.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
-    }
 }

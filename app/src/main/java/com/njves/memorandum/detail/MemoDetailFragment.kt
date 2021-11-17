@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
@@ -63,7 +62,7 @@ class MemoDetailFragment : Fragment() {
         edSubject.setText(memo.subject)
         edContent.setText(memo.content)
         tvDate.apply {
-            text = memo.getFormatDate()
+            text = memo.formatDate
         }
     }
 
@@ -105,7 +104,7 @@ class MemoDetailFragment : Fragment() {
                 newCalendar.set(Calendar.MONTH, monthOfYear)
                 newCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 memo.date = newCalendar.time
-                tvDate.text = memo.getFormatDate()
+                tvDate.text = memo.formatDate
             }
             val year = newCalendar.get(Calendar.YEAR)
             val month = newCalendar.get(Calendar.MONTH)
@@ -114,7 +113,6 @@ class MemoDetailFragment : Fragment() {
             datePickerDialog.show()
         }
     }
-
     private fun saveMemo() {
         when(mode) {
             UPDATE_MODE -> {
