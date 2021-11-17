@@ -1,11 +1,12 @@
 package com.njves.memorandum
 
+import android.content.Context
 import android.graphics.Color
 import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemListener) :
+class MemoAdapter(private val context: Context, var memoList: List<Memo>, val onClickListener: OnClickItemListener) :
     RecyclerView.Adapter<MemoAdapter.MemoViewHolder>(),
     ItemTouchHelperAdapter {
 
@@ -34,11 +35,11 @@ class MemoAdapter(var memoList: List<Memo>, val onClickListener: OnClickItemList
             tvDate.text = memo.formatDate
             if(memo.subject.isEmpty()) {
                 tvSubject.setTextColor(Color.GRAY)
-                tvSubject.text = "Без заголовка"
+                tvSubject.text = context.getString(R.string.message_subject_empty)
             }
             if(memo.content.isEmpty()) {
                 tvContent.setTextColor(Color.GRAY)
-                tvContent.text = "Нет описания"
+                tvContent.text = context.getString(R.string.message_content_empty)
             }
             itemView.setOnClickListener {
                 onClickListener.onClick(memo)

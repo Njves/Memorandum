@@ -6,4 +6,6 @@
     <string name="hint_content">Описание</string>
     <string name="menu_action_add">Добавить</string>
     <string name="action_remove">Отменить</string>
+    <string name="message_subject_empty">Без заголовка</string>
+    <string name="message_content_empty">Нет описания</string>
 </resources>
