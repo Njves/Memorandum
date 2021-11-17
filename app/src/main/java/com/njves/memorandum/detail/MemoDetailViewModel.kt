@@ -23,7 +23,4 @@ class MemoDetailViewModel: ViewModel() {
         repository.updateMemo(memo)
     }
 
-    fun getPhotoFile(memo: Memo): File {
-        return repository.getPhotoFile(memo)
-    }
 }

@@ -7,6 +7,5 @@ class App: Application() {
         super.onCreate()
         MemoRepository.init(applicationContext)
         TimeNotification.getInstance(applicationContext).createChannel()
-        TimeNotification.getInstance(applicationContext).setAlarm()
     }
 }
