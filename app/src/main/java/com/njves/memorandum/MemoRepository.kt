@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.room.Room
 import com.njves.memorandum.database.MIGRATION_1_2
+import com.njves.memorandum.database.MIGRATION_2_3
 import com.njves.memorandum.database.MemoDatabase
 import java.io.File
 import java.lang.IllegalStateException
@@ -33,7 +34,7 @@ class MemoRepository(private val context: Context) {
     private val db = Room.databaseBuilder(
         context,
         MemoDatabase::class.java, "memo.db"
-    ).allowMainThreadQueries().addMigrations(MIGRATION_1_2).build()
+    ).allowMainThreadQueries().addMigrations(MIGRATION_2_3).build()
 
     private val memoDao = db.memoDao()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()

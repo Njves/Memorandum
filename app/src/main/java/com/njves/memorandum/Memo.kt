@@ -1,5 +1,6 @@
 package com.njves.memorandum
 
+import android.graphics.Color
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -7,7 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity
-data class Memo(@PrimaryKey val id: UUID = UUID.randomUUID(), var subject: String = "", var content: String = "", var date: Date = Date()) {
+data class Memo(@PrimaryKey val id: UUID = UUID.randomUUID(), var subject: String = "", var content: String = "", var date: Date = Date(), var color: Int = Color.WHITE) {
     fun isEmpty(): Boolean {
         return subject.isBlank() && content.isBlank()
     }

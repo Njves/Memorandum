@@ -1,6 +1,7 @@
 package com.njves.memorandum.detail
 
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,17 +16,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.njves.memorandum.Memo
 import com.njves.memorandum.R
 import java.util.*
+import com.jaredrummler.android.colorpicker.ColorShape
+
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
+
+
+
 
 
 private const val TAG = "MemoDetailFragment"
 const val ARGS_ID = "id"
 const val CREATE_MODE = 0
 const val UPDATE_MODE = 1
+private const val COLOR_PICKER_ID = 1
 
-class MemoDetailFragment : Fragment() {
+class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
     private var memo: Memo = Memo()
     private lateinit var edSubject: EditText
     private lateinit var edContent: EditText
@@ -67,17 +76,19 @@ class MemoDetailFragment : Fragment() {
         tvDate.apply {
             text = memo.formatDate
         }
+        bottomNavView.apply {
+            this.menu.setGroupCheckable(0, false, true)
+        }
 
     }
 
     override fun onStart() {
         super.onStart()
 
-        bottomNavView.menu.setGroupCheckable(0, false, true)
         bottomNavView.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.action_color_pick -> {
-                    Toast.makeText(requireContext(), "Action color pick", Toast.LENGTH_SHORT).show()
+                    createColorPickerDialog(COLOR_PICKER_ID)
                     it.isChecked = false
                 }
                 R.id.action_image -> {
@@ -172,5 +183,31 @@ class MemoDetailFragment : Fragment() {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onColorSelected(dialogId: Int, color: Int) {
+        when(dialogId) {
+            COLOR_PICKER_ID -> {
+                memo.color = color
+                Log.d(TAG, color.toString())
+            }
+        }
+    }
+
+    override fun onDialogDismissed(dialogId: Int) {
+
+    }
+
+    private fun createColorPickerDialog(id: Int) {
+        val dialog = ColorPickerDialog.newBuilder()
+            .setColor(Color.RED)
+            .setDialogType(ColorPickerDialog.TYPE_PRESETS)
+            .setAllowCustom(true)
+            .setAllowPresets(true)
+            .setColorShape(ColorShape.SQUARE)
+            .setDialogId(id)
+            .create()
+        dialog.setColorPickerDialogListener(this)
+        dialog.show(childFragmentManager, "")
     }
 }

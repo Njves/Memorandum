@@ -15,6 +15,7 @@ class MemoDiffUtilCallback(private val oldList: List<Memo>, private val newList:
         return oldList[oldItemPosition].subject == newList[newItemPosition].subject
                 && oldList[oldItemPosition].content == newList[newItemPosition].content
                 && oldList[oldItemPosition].date == newList[newItemPosition].date
+                && oldList[oldItemPosition].color == newList[newItemPosition].color
     }
 
 }
