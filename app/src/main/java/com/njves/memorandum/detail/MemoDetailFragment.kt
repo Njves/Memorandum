@@ -8,11 +8,13 @@ import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.njves.memorandum.Memo
 import com.njves.memorandum.R
 import java.util.*
@@ -28,9 +30,11 @@ class MemoDetailFragment : Fragment() {
     private lateinit var edSubject: EditText
     private lateinit var edContent: EditText
     private lateinit var tvDate: TextView
+    private lateinit var bottomNavView: BottomNavigationView
+
     private var mode: Int = CREATE_MODE
     private val viewModel: MemoDetailViewModel by viewModels()
-    private var actionBar: ActionBar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.getSerializable(ARGS_ID)?.let {
@@ -50,10 +54,9 @@ class MemoDetailFragment : Fragment() {
         edSubject = view.findViewById(R.id.ed_subject)
         edContent = view.findViewById(R.id.ed_content)
         tvDate = view.findViewById(R.id.tv_date)
-        actionBar = (requireActivity() as AppCompatActivity).supportActionBar
-        if(memo.subject.isNotEmpty()) {
-            actionBar?.title = memo.subject
-        }
+        bottomNavView = view.findViewById(R.id.bottom_nav)
+
+        setToolbarTitle()
         return view
     }
 
@@ -64,10 +67,26 @@ class MemoDetailFragment : Fragment() {
         tvDate.apply {
             text = memo.formatDate
         }
+
     }
 
     override fun onStart() {
         super.onStart()
+
+        bottomNavView.menu.setGroupCheckable(0, false, true)
+        bottomNavView.setOnItemSelectedListener {
+            when(it.itemId) {
+                R.id.action_color_pick -> {
+                    Toast.makeText(requireContext(), "Action color pick", Toast.LENGTH_SHORT).show()
+                    it.isChecked = false
+                }
+                R.id.action_image -> {
+                    Toast.makeText(requireContext(), "Action image", Toast.LENGTH_SHORT).show()
+                    it.isChecked = false
+                }
+            }
+            return@setOnItemSelectedListener true
+        }
 
         edSubject.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -122,6 +141,13 @@ class MemoDetailFragment : Fragment() {
                 viewModel.addMemo(memo)
                 mode = UPDATE_MODE
             }
+        }
+    }
+
+    private fun setToolbarTitle() {
+        val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
+        if(memo.subject.isNotEmpty()) {
+            actionBar?.title = memo.subject
         }
     }
 
