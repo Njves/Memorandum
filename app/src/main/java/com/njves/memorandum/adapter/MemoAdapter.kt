@@ -1,4 +1,4 @@
-package com.njves.memorandum
+package com.njves.memorandum.adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -6,6 +6,8 @@ import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.njves.memorandum.Memo
+import com.njves.memorandum.R
 
 class MemoAdapter(private val context: Context, var memoList: List<Memo>, val onClickListener: OnClickItemListener) :
     RecyclerView.Adapter<MemoAdapter.MemoViewHolder>(),

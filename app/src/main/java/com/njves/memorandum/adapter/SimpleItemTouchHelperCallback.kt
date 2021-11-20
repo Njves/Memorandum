@@ -1,4 +1,4 @@
-package com.njves.memorandum
+package com.njves.memorandum.adapter
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

@@ -1,6 +1,7 @@
-package com.njves.memorandum
+package com.njves.memorandum.adapter
 
 import androidx.recyclerview.widget.DiffUtil
+import com.njves.memorandum.Memo
 
 class MemoDiffUtilCallback(private val oldList: List<Memo>, private val newList: List<Memo>) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size

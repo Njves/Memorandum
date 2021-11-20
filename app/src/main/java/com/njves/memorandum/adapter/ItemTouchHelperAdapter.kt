@@ -1,4 +1,4 @@
-package com.njves.memorandum
+package com.njves.memorandum.adapter
 
 interface ItemTouchHelperAdapter {
     fun onItemDismiss(position: Int)

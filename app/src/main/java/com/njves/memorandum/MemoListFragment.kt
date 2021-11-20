@@ -1,10 +1,8 @@
 package com.njves.memorandum
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
+import android.graphics.Canvas
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -15,11 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
@@ -27,6 +25,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.njves.memorandum.adapter.MemoAdapter
+import com.njves.memorandum.adapter.MemoDiffUtilCallback
+import com.njves.memorandum.adapter.SimpleItemTouchHelperCallback
 import com.njves.memorandum.detail.ARGS_ID
 
 const val TAG = "MemoListFragment"
@@ -52,6 +53,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_memo_list, container, false)
+
         edQuery = view.findViewById(R.id.ed_query)
         rvMemo = view.findViewById(R.id.rv_memo)
         fabAdd = view.findViewById(R.id.fab_add)
@@ -63,11 +65,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
             this.addOnScrollListener(object: RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    val focus = this@MemoListFragment.requireActivity().currentFocus
-                    view?.let {
-                        val inputMethodManager = this@MemoListFragment.requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                    }
+                    MemoUtil.hideKeyboard(requireActivity(), view)
                 }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -79,7 +77,7 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         val callback = SimpleItemTouchHelperCallback(this.adapter)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(rvMemo)
-
+        
         return view
     }
 
