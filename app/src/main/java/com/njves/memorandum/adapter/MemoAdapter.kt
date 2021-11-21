@@ -37,6 +37,7 @@ class MemoAdapter(private val context: Context, var memoList: List<Memo>, val on
             tvContent.text = memo.content
             tvDate.text = memo.formatDate
             root.setCardBackgroundColor(memo.color)
+            reflectTextColor()
             if(memo.subject.isEmpty()) {
                 tvSubject.setTextColor(Color.GRAY)
                 tvSubject.text = context.getString(R.string.message_subject_empty)
@@ -47,6 +48,14 @@ class MemoAdapter(private val context: Context, var memoList: List<Memo>, val on
             }
             itemView.setOnClickListener {
                 onClickListener.onClick(memo)
+            }
+        }
+        
+        private fun reflectTextColor() {
+            if(memo.color == Color.BLACK) {
+                tvSubject.setTextColor(Color.WHITE)
+                tvContent.setTextColor(Color.WHITE)
+                tvDate.setTextColor(Color.WHITE)
             }
         }
     }

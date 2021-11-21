@@ -77,7 +77,8 @@ class MemoListFragment: Fragment(), MemoAdapter.OnClickItemListener {
         val callback = SimpleItemTouchHelperCallback(this.adapter)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(rvMemo)
-        
+
+
         return view
     }
 
