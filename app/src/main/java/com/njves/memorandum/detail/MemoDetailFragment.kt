@@ -78,22 +78,30 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
         }
         bottomNavView.apply {
             this.menu.setGroupCheckable(0, false, true)
+
         }
 
     }
 
     override fun onStart() {
         super.onStart()
-
+        // Делаем отметку выполнения checkable
+        bottomNavView.menu.findItem(R.id.action_mark_completed).isCheckable = memo.completed
+        // Назначаем отметку такую же как в модели
+        bottomNavView.menu.findItem(R.id.action_mark_completed).isChecked = memo.completed
         bottomNavView.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.action_color_pick -> {
                     createColorPickerDialog(COLOR_PICKER_ID)
-                    it.isChecked = false
+
                 }
                 R.id.action_image -> {
                     Toast.makeText(requireContext(), "Action image", Toast.LENGTH_SHORT).show()
-                    it.isChecked = false
+
+                }
+                R.id.action_mark_completed -> {
+                    memo.completed = !it.isCheckable
+                    it.isCheckable = memo.completed
                 }
             }
             return@setOnItemSelectedListener true
@@ -106,6 +114,7 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 memo.subject = s.toString()
+                memo.completed = true
             }
 
             override fun afterTextChanged(s: Editable?) {

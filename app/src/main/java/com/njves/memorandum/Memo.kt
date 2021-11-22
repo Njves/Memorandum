@@ -8,7 +8,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity
-data class Memo(@PrimaryKey val id: UUID = UUID.randomUUID(), var subject: String = "", var content: String = "", var date: Date = Date(), var color: Int = Color.WHITE) {
+data class Memo(@PrimaryKey val id: UUID = UUID.randomUUID(),
+                var subject: String = "",
+                var content: String = "",
+                var date: Date = Date(),
+                var color: Int = Color.WHITE,
+                var completed: Boolean = false) {
     fun isEmpty(): Boolean {
         return subject.isBlank() && content.isBlank()
     }

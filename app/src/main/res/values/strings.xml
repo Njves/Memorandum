@@ -8,4 +8,9 @@
     <string name="action_remove">Отменить</string>
     <string name="message_subject_empty">Без заголовка</string>
     <string name="message_content_empty">Нет описания</string>
+    <string name="action_color_pick_title">Color</string>
+    <string name="action_image_pick_title">Image</string>
+    <string name="is_completed">Выполненно</string>
+    <string name="is_not_completed">Не выполненно</string>
+    <string name="action_completed">Completed</string>
 </resources>

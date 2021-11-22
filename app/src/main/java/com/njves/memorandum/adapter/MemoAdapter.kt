@@ -29,6 +29,7 @@ class MemoAdapter(private val context: Context, var memoList: List<Memo>, val on
         private val tvSubject: TextView = itemView.findViewById(R.id.tv_subject)
         private val tvContent: TextView = itemView.findViewById(R.id.tv_content)
         private val tvDate: TextView = itemView.findViewById(R.id.tv_date)
+        private val tvCompleted: TextView = itemView.findViewById(R.id.tv_completed)
         private lateinit var memo: Memo
 
         fun bind(memo: Memo) {
@@ -37,6 +38,7 @@ class MemoAdapter(private val context: Context, var memoList: List<Memo>, val on
             tvContent.text = memo.content
             tvDate.text = memo.formatDate
             root.setCardBackgroundColor(memo.color)
+            tvCompleted.text = formatCompleted()
             reflectTextColor()
             if(memo.subject.isEmpty()) {
                 tvSubject.setTextColor(Color.GRAY)
@@ -56,7 +58,12 @@ class MemoAdapter(private val context: Context, var memoList: List<Memo>, val on
                 tvSubject.setTextColor(Color.WHITE)
                 tvContent.setTextColor(Color.WHITE)
                 tvDate.setTextColor(Color.WHITE)
+                tvCompleted.setTextColor(Color.WHITE)
             }
+        }
+
+        private fun formatCompleted(): String {
+            return if(memo.completed) context.getString(R.string.is_completed) else context.getString(R.string.is_not_completed)
         }
     }
 
