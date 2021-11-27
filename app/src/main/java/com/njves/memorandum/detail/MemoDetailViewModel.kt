@@ -1,16 +1,23 @@
 package com.njves.memorandum.detail
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.njves.memorandum.Memo
 import com.njves.memorandum.MemoRepository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
 class MemoDetailViewModel: ViewModel() {
     private val repository: MemoRepository = MemoRepository.get()
+    private val memoIdLiveData = MutableLiveData<UUID>()
 
-    fun findMemoById(id: UUID): Memo? {
-        return repository.getMemo(id)
+    val memoLiveData: LiveData<Memo?> = Transformations.switchMap(memoIdLiveData) { memoId ->
+        repository.getMemo(memoId)
+    }
+
+    fun loadMemo(memoId: UUID) {
+        memoIdLiveData.value = memoId
     }
 
     fun addMemo(memo: Memo) {
@@ -20,7 +27,10 @@ class MemoDetailViewModel: ViewModel() {
     }
 
     fun updateMemo(memo: Memo) {
-        repository.updateMemo(memo)
+        // TODO: change to something else
+        GlobalScope.launch {
+            repository.updateMemo(memo)
+        }
     }
 
 }

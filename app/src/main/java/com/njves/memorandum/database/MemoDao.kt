@@ -14,7 +14,7 @@ interface MemoDao {
     fun getMemosByDate(): LiveData<List<Memo>>
 
     @Query("SELECT * FROM memo WHERE id=(:id)")
-    fun getMemo(id: UUID): Memo
+    fun getMemo(id: UUID): LiveData<Memo?>
 
     @Insert
     fun addMemo(memo: Memo)

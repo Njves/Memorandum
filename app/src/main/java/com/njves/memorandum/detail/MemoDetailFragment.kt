@@ -2,6 +2,7 @@ package com.njves.memorandum.detail
 
 import android.app.DatePickerDialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
@@ -23,10 +25,6 @@ import java.util.*
 import com.jaredrummler.android.colorpicker.ColorShape
 
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
-
-
-
-
 
 private const val TAG = "MemoDetailFragment"
 const val ARGS_ID = "id"
@@ -48,7 +46,7 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
         super.onCreate(savedInstanceState)
         arguments?.getSerializable(ARGS_ID)?.let {
             mode = UPDATE_MODE
-            memo = viewModel.findMemoById(it as UUID) ?: return
+            viewModel.loadMemo(it as UUID)
         }
         Log.d(TAG, memo.toString())
         Log.d(TAG, "mode $mode")
@@ -65,24 +63,36 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
         tvDate = view.findViewById(R.id.tv_date)
         bottomNavView = view.findViewById(R.id.bottom_nav)
 
-        setToolbarTitle()
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.getSerializable(ARGS_ID)?.let {
+            viewModel.loadMemo(it as UUID)
+        }
+        viewModel.memoLiveData.observe(viewLifecycleOwner, { memo ->
+            memo?.let {
+                this.memo = it
+                updateUi()
+            }
+        })
+
+        bottomNavView.apply {
+            this.menu.setGroupCheckable(0, false, true)
+        }
+
+    }
+
+    private fun updateUi() {
         edSubject.setText(memo.subject)
         edContent.setText(memo.content)
         tvDate.apply {
             text = memo.formatDate
         }
-        bottomNavView.apply {
-            this.menu.setGroupCheckable(0, false, true)
-
-        }
-
+        updateToolbar()
     }
-
     override fun onStart() {
         super.onStart()
         // Делаем отметку выполнения checkable
@@ -164,7 +174,7 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
         }
     }
 
-    private fun setToolbarTitle() {
+    private fun updateToolbar() {
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
         if(memo.subject.isNotEmpty()) {
             actionBar?.title = memo.subject

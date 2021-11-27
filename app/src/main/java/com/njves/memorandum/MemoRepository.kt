@@ -34,17 +34,14 @@ class MemoRepository(private val context: Context) {
     private val db = Room.databaseBuilder(
         context,
         MemoDatabase::class.java, "memo.db"
-    ).allowMainThreadQueries().build()
+    ).build()
 
     private val memoDao = db.memoDao()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
-    private val filesDir = context.applicationContext.filesDir
-
-    fun getList(): LiveData<List<Memo>> = memoDao.getAll()
 
     fun getSortedList(): LiveData<List<Memo>> = memoDao.getMemosByDate()
 
-    fun getMemo(id: UUID): Memo = memoDao.getMemo(id)
+    fun getMemo(id: UUID): LiveData<Memo?> = memoDao.getMemo(id)
 
     fun addMemo(memo: Memo) {
         executor.execute {
