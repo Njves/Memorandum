@@ -5,10 +5,6 @@
         android:title="@string/action_color_pick_title"
         android:icon="@drawable/ic_color_pick"/>
     <item
-        android:id="@+id/action_image"
-        android:title="@string/action_image_pick_title"
-        android:icon="@drawable/ic_image"/>
-    <item
         android:id="@+id/action_mark_completed"
         android:title="@string/action_completed"
         android:icon="@drawable/ic_check" />

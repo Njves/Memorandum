@@ -2,6 +2,7 @@ package com.njves.memorandum.detail
 
 import android.app.DatePickerDialog
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
@@ -9,10 +10,13 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -38,6 +42,7 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
     private lateinit var edContent: EditText
     private lateinit var tvDate: TextView
     private lateinit var bottomNavView: BottomNavigationView
+    private lateinit var ivMark: ImageView
 
     private var mode: Int = CREATE_MODE
     private val viewModel: MemoDetailViewModel by viewModels()
@@ -62,7 +67,7 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
         edContent = view.findViewById(R.id.ed_content)
         tvDate = view.findViewById(R.id.tv_date)
         bottomNavView = view.findViewById(R.id.bottom_nav)
-
+        ivMark = view.findViewById(R.id.iv_mark)
 
         return view
     }
@@ -91,6 +96,9 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
         tvDate.apply {
             text = memo.formatDate
         }
+        val drawable = ResourcesCompat.getDrawable(resources, R.drawable.ic_view_mark, requireActivity().theme)
+        drawable?.setTint(memo.color)
+        ivMark.setImageDrawable(drawable)
         updateToolbar()
     }
     override fun onStart() {
@@ -103,10 +111,6 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
             when(it.itemId) {
                 R.id.action_color_pick -> {
                     createColorPickerDialog(COLOR_PICKER_ID)
-
-                }
-                R.id.action_image -> {
-                    Toast.makeText(requireContext(), "Action image", Toast.LENGTH_SHORT).show()
 
                 }
                 R.id.action_mark_completed -> {
@@ -209,6 +213,7 @@ class MemoDetailFragment : Fragment(), ColorPickerDialogListener {
             COLOR_PICKER_ID -> {
                 memo.color = color
                 Log.d(TAG, color.toString())
+                updateUi()
             }
         }
     }
